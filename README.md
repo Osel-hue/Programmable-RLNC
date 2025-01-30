@@ -32,7 +32,7 @@ Below, we mention which containers are deployed on which hosts and switch:
 - **Host-2:** `UPF`
 - **Host-3:** `gNB`
 - **Host-4:** `ext-DN`, `UE`, and `Encoder`
-- **INC Switch:** `Recoder`
+- **INC Cisco Switch:** `Recoder`
 
 ## 2.1. Retrieving the images on Docker-Hub ##
 
