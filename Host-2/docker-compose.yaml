@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+    oai-spgwu:
+        container_name: "rfsim5g-oai-spgwu"
+        image: oaisoftwarealliance/oai-spgwu-tiny:v1.5.0
+        environment:
+            - TZ=Europe/Paris
+            - SGW_INTERFACE_NAME_FOR_S1U_S12_S4_UP=eth0
+            - SGW_INTERFACE_NAME_FOR_SX=eth0
+            - PGW_INTERFACE_NAME_FOR_SGI=eth0
+            - NETWORK_UE_NAT_OPTION=yes
+            - NETWORK_UE_IP=12.1.1.0/24
+            - ENABLE_5G_FEATURES=yes
+            - REGISTER_NRF=yes
+            - USE_FQDN_NRF=yes
+            - UPF_FQDN_5G=oai-spgwu
+            - NRF_IPV4_ADDRESS=192.168.71.130
+            - NRF_FQDN=oai-nrf
+            # Only one slice is defined (1, 0xFFFFFF)
+            - NSSAI_SST_0=1
+            - NSSAI_SD_0=0xffffff
+            - DNN_0=oai
+
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        cap_drop:
+            - ALL
+        privileged: true
+        networks:
+            public_net:
+                ipv4_address: 192.168.71.134
+            traffic_net:
+                ipv4_address: 192.168.72.134
+
+networks:
+    public_net:
+        driver: overlay
+        name: rfsim5g-oai-public-net
+        external: true
+        
+    traffic_net:
+        driver: overlay
+        name: rfsim5g-oai-traffic-net
+        external: true
