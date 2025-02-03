@@ -7,9 +7,9 @@ echo "Start sliding window python code in containers for video traffic..."
 for ((i=first; i<=runs; i++));
 do
   echo "Start encoder $i..."
-  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 sampling.py sw"
+  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 FlexNC_encoder.py sw"
   echo "Start decoder $i..."
-  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 decoder_sampling.py vid_flexnc_sw_$i.csv sw"
+  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 FlexNC_decoder.py vid_flexnc_sw_$i.csv sw"
   echo "Start DN $i..."
   docker exec -d rfsim5g-oai-ext-dn  bash -c "tcpreplay -i eth0 --timer=nano enc_video_1080p.pcap"
   sleep 35
@@ -24,9 +24,9 @@ echo "Start systematic block coding (sbc) python code in containers for video tr
 for ((i=first; i<=runs; i++));
 do
   echo "Start encoder $i..."
-  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 sampling.py sbc"
+  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 FlexNC_encoder.py sbc"
   echo "Start decoder $i..."
-  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 decoder_sampling.py vid_flexnc_sbc_$i.csv sbc"
+  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 FlexNC_decoder.py vid_flexnc_sbc_$i.csv sbc"
   echo "Start DN $i..."
   docker exec -d rfsim5g-oai-ext-dn  bash -c "tcpreplay -i eth0 --timer=nano enc_video_1080p.pcap"
   sleep 35
