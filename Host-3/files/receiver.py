@@ -10,20 +10,21 @@ Audio =  [26425, 1328]
 Video = [11942, 1328] 
 Haptic = [635000, 82]
 
-owd_result = list() # list of oneway delays
+owd_result = list() # list of one-way-delays
 data_buffer = list() #list storing received data and its timestamp
 owd_result.clear()
 data_buffer.clear()
 
 OUTPUT_FILE = sys.argv[1]
 
-# Change it to audio, video or haptic depending on traffic under test
+# Total number of packets 
 tot_pkt = int(sys.argv[2])
 
+# UE IP address and port where packets will arrive
 ue_ip = "12.1.1.2" 
 ue_port = 9000 
 ue_info = (ue_ip, int(ue_port))
-server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # udp
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server.bind(ue_info)
 
 BUFSIZE = 4084
