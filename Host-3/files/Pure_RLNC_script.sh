@@ -7,9 +7,9 @@ echo "Start sliding window (sw) python code in containers for video traffic..."
 for ((i=first; i<=runs; i++));
 do
   echo "Start encoder $i..."
-  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 single_encoder.py sw 1328"
+  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 Pure_SW_encoder.py"
   echo "Start decoder $i..."
-  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 single_decoder.py vid_pure_sw_$i.csv 11942 1328 sw"
+  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 Pure_SW_decoder.py vid_pure_sw_$i.csv 11942"
   echo "Start DN $i..."
   docker exec -d rfsim5g-oai-ext-dn  bash -c "tcpreplay -i eth0 --timer=nano enc_video_1080p.pcap"
   sleep 35
@@ -23,9 +23,9 @@ echo "Start systematic block coding (sbc) python code in containers for video tr
 for ((i=first; i<=runs; i++));
 do
   echo "Start encoder $i..."
-  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 single_encoder.py sbc 1328"
+  docker exec -d rfsim5g-hcs-encoder  bash -c "timeout 35s python3 Pure_SBC_encoder.py"
   echo "Start decoder $i..."
-  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 single_decoder.py vid_pure_sbc_$i.csv 11942 1328 sbc"
+  docker exec -d rfsim5g-oai-nr-ue  bash -c "python3 Pure_SBC_decoder.py vid_pure_sbc_$i.csv 11942"
   echo "Start DN $i..."
   docker exec -d rfsim5g-oai-ext-dn  bash -c "tcpreplay -i eth0 --timer=nano enc_video_1080p.pcap"
   sleep 35
