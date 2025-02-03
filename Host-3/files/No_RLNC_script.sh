@@ -1,7 +1,7 @@
 #!/bin/bash
 
 first=1
-runs=33
+runs=50
 
 echo "Start No NC python code in containers for video traffic..."
 for ((i=first; i<=runs; i++));
