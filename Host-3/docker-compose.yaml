@@ -22,6 +22,87 @@ services:
             timeout: 5s
             retries: 5
 
+
+    hcs-encoder:
+        image: netcod-img
+        privileged: true
+        container_name: rfsim5g-hcs-encoder
+        entrypoint: /bin/bash -c \
+              "echo 0 > /proc/sys/net/ipv4/ip_forward;"\
+              "ip route add 12.1.1.0/24 via 192.168.72.134; sleep infinity"
+        networks:
+            traffic_net:
+                ipv4_address: 192.168.72.145
+    
+    nc-nr-ue:
+        image: ue-netcod-img
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue
+        environment: 
+            RFSIMULATOR: 192.168.71.140
+            FULL_IMSI: '208990100001100'
+            FULL_KEY: 'fec86ba6eb707ed08905757b1bb44b8f'
+            OPC: 'C42449363BBAD02B66D16BC975D77CC1'
+            DNN: oai
+            NSSAI_SST: 1
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -r 106 --numerology 1 -C 3619200000 --log_config.global_log_options level,nocolor,time
+        networks:
+            public_net:
+                ipv4_address: 192.168.71.150
+            destination_net:
+                ipv4_address: 172.19.0.65
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    hcs-decoder:
+        image: netcod-img
+        privileged: true
+        container_name: rfsim5g-hcs-decoder
+        entrypoint: /bin/bash -c \
+              "echo 0 > /proc/sys/net/ipv4/ip_forward; sleep infinity"
+        networks:
+            destination_net:
+                ipv4_address: 172.19.0.67
+
+    nc-nr-ue2:
+        image: ue-netcod-img
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue2
+        environment: 
+            RFSIMULATOR: 192.168.71.140
+            FULL_IMSI: '208990100001101'
+            FULL_KEY: 'fec86ba6eb707ed08905757b1bb44b8f'
+            OPC: 'C42449363BBAD02B66D16BC975D77CC1'
+            DNN: oai
+            NSSAI_SST: 1
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -r 106 --numerology 1 -C 3619200000 --log_config.global_log_options level,nocolor,time
+        networks:
+            public_net:
+                ipv4_address: 192.168.71.151
+            source_net:
+                ipv4_address: 192.168.74.151
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            
+    hcs-source:
+        image: netcod-img
+        privileged: true
+        container_name: rfsim5g-hcs-source
+        entrypoint: /bin/bash -c \
+              "echo 0 > /proc/sys/net/ipv4/ip_forward; sleep infinity"
+        networks:
+            source_net:
+                ipv4_address: 192.168.74.145
+        depends_on:
+            - nc-nr-ue2
+            
+
 networks:
     public_net:
         driver: overlay
@@ -32,3 +113,17 @@ networks:
         driver: overlay
         name: rfsim5g-oai-traffic-net
         external: true
+
+    destination_net:
+        driver: bridge
+        name: ext-destination-net
+        external: true
+        
+    source_net:
+        driver: bridge
+        name: ext-source-net
+        ipam:
+            config:
+                - subnet: 192.168.74.128/26
+        driver_opts:
+            com.docker.network.bridge.name: "ext-source"                 
