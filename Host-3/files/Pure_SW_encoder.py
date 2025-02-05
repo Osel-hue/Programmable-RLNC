@@ -1,5 +1,4 @@
 import socket
-import sys
 
 # TODO: Import your RLNC module here and replace the placeholder for proprietary RLNC library
 import rlnc_library
