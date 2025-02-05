@@ -8,6 +8,7 @@ docker cp files/tcpreplay-4.4.2 rfsim5g-hcs-source:/
 docker cp files/Pure_SBC_encoder.py rfsim5g-hcs-encoder:/
 docker cp files/Pure_SW_encoder.py rfsim5g-hcs-encoder:/
 docker cp files/FlexNC_encoder.py rfsim5g-hcs-encoder:/
+docker cp files/Forwarder_at_Enc.py rfsim5g-hcs-encoder:/
 
 docker cp files/Pure_SBC_decoder.py rfsim5g-oai-nr-ue:/opt/oai-nr-ue
 docker cp files/Pure_SW_decoder.py rfsim5g-oai-nr-ue:/opt/oai-nr-ue
