@@ -282,7 +282,8 @@ In our case, the UE IP address is `12.1.1.2`. However, it can be modified to mat
 As an example, we provide our video pcap file that will be copied into the `ext-DN` container from where we send packets using the previous command. We use `tcpreplay` to replay this video pcap file but must first compile it inside the containers where it will be used (`ext-DN` and `Source`):
 
 ```bash
- cd tcpreplay-4.4.2/
+cd tcpreplay-4.4.2/
+./configure
 make
 make install
 ```
